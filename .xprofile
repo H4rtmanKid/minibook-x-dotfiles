@@ -1,0 +1,15 @@
+export GTK_THEME=Orchis-Dark-Dracula
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+
+# Required for xdg-desktop-portal to work correctly on i3/X11
+export XDG_CURRENT_DESKTOP=i3
+export XDG_SESSION_TYPE=x11
+dbus-update-activation-environment --systemd XDG_CURRENT_DESKTOP XDG_SESSION_TYPE DISPLAY
+
+# Force GTK apps to use built-in file chooser instead of xdg-desktop-portal overlay
+# (portal renders as full-screen purple blank on i3/X11)
+export GTK_USE_PORTAL=0

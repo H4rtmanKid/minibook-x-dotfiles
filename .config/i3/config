@@ -1,0 +1,193 @@
+# i3 config file (v4)
+
+set $mod Mod4
+
+font pango:JetBrainsMono Nerd Font 10
+
+# Window borders
+default_border pixel 3
+default_floating_border pixel 3
+hide_edge_borders none
+for_window [class=".*"] border pixel 3
+
+# Gaps
+gaps inner 8
+gaps outer 4
+smart_gaps on
+
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.local/bin/lock.sh
+exec --no-startup-id xautolock -time 10 -locker ~/.local/bin/lock.sh
+
+# Display: rotate screen right
+exec --no-startup-id xrandr --output DSI-1 --rotate right
+# Touchscreen: apply transformation matrix to match rotated display
+# Compositor
+exec --no-startup-id picom --config ~/.config/picom.conf -b
+exec --no-startup-id thunar --daemon
+exec --no-startup-id dunst
+exec --no-startup-id fcitx5 -d --disable classicui,notificationitem
+exec --no-startup-id feh --bg-scale /home/h4rtmankid/wallpaper/86-wallpaper.jpg
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
+
+# Toggle Thai/English input method
+bindsym $mod+space exec --no-startup-id ~/.config/i3/toggle-im.sh
+
+# Volume control — OSD notification (XF86 keys are layout-independent)
+bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.local/bin/volume-notify up
+bindsym XF86AudioLowerVolume exec --no-startup-id ~/.local/bin/volume-notify down
+bindsym XF86AudioMute        exec --no-startup-id ~/.local/bin/volume-notify mute
+bindsym XF86AudioMicMute     exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+bindsym Print exec --no-startup-id flameshot gui
+bindsym $mod+Print exec --no-startup-id flameshot screen
+
+# Brightness control — OSD notification
+bindsym XF86MonBrightnessUp   exec --no-startup-id ~/.local/bin/brightness-notify up
+bindsym XF86MonBrightnessDown exec --no-startup-id ~/.local/bin/brightness-notify down
+
+floating_modifier $mod
+tiling_drag modifier titlebar
+
+# Lock screen          x=53 (layout-independent)
+bindcode $mod+Shift+53 exec --no-startup-id ~/.local/bin/lock.sh
+
+# Terminal (Return is layout-independent)
+bindsym $mod+Return exec i3-sensible-terminal
+
+# File manager         t=28
+bindcode $mod+28 exec thunar
+
+# Kill window          q=24
+bindcode $mod+Shift+24 kill
+
+# App launcher         d=40
+bindcode $mod+40 exec --no-startup-id rofi -show drun -show-icons
+
+# Focus                j=44 k=45 l=46 semicolon=47
+bindcode $mod+44 focus left
+bindcode $mod+45 focus down
+bindcode $mod+46 focus up
+bindcode $mod+47 focus right
+
+bindsym $mod+Left  focus left
+bindsym $mod+Down  focus down
+bindsym $mod+Up    focus up
+bindsym $mod+Right focus right
+
+# Move window
+bindcode $mod+Shift+44 move left
+bindcode $mod+Shift+45 move down
+bindcode $mod+Shift+46 move up
+bindcode $mod+Shift+47 move right
+
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Right move right
+
+# Split                h=43 v=55
+bindcode $mod+43 split h
+bindcode $mod+55 split v
+
+# Fullscreen           f=41
+bindcode $mod+41 fullscreen toggle
+
+# Layout               s=39 w=25 e=26
+bindcode $mod+39 layout stacking
+bindcode $mod+25 layout tabbed
+bindcode $mod+26 layout toggle split
+
+# Floating (space is layout-independent)
+bindsym $mod+Shift+space floating toggle
+
+# Float dialogs automatically
+for_window [window_type="dialog"] floating enable
+for_window [window_type="utility"] floating enable
+for_window [window_type="splash"] floating enable
+for_window [window_type="toolbar"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [window_role="dialog"] floating enable
+for_window [window_role="GtkFileChooserDialog"] floating enable, resize set 960 700, move position center
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [class="xdg-desktop-portal-gtk"] floating enable
+
+# Focus mode toggle        f=41
+bindcode $mod+Shift+41 focus mode_toggle
+
+# Focus parent         a=38
+bindcode $mod+38 focus parent
+
+# Workspaces
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# Switch workspace     1-0 = keycodes 10-19
+bindcode $mod+10 workspace number $ws1
+bindcode $mod+11 workspace number $ws2
+bindcode $mod+12 workspace number $ws3
+bindcode $mod+13 workspace number $ws4
+bindcode $mod+14 workspace number $ws5
+bindcode $mod+15 workspace number $ws6
+bindcode $mod+16 workspace number $ws7
+bindcode $mod+17 workspace number $ws8
+bindcode $mod+18 workspace number $ws9
+bindcode $mod+19 workspace number $ws10
+
+# Move to workspace
+bindcode $mod+Shift+10 move container to workspace number $ws1
+bindcode $mod+Shift+11 move container to workspace number $ws2
+bindcode $mod+Shift+12 move container to workspace number $ws3
+bindcode $mod+Shift+13 move container to workspace number $ws4
+bindcode $mod+Shift+14 move container to workspace number $ws5
+bindcode $mod+Shift+15 move container to workspace number $ws6
+bindcode $mod+Shift+16 move container to workspace number $ws7
+bindcode $mod+Shift+17 move container to workspace number $ws8
+bindcode $mod+Shift+18 move container to workspace number $ws9
+bindcode $mod+Shift+19 move container to workspace number $ws10
+
+# i3 control           c=54 r=27 e=26
+bindcode $mod+Shift+54 reload
+bindcode $mod+Shift+27 restart
+bindcode $mod+Shift+26 exec "i3-nagbar -t warning -m 'Exit i3?' -B 'Yes, exit' 'i3-msg exit'"
+
+# Resize mode          r=27
+mode "resize" {
+        bindcode 44 resize shrink width 10 px or 10 ppt
+        bindcode 45 resize grow height 10 px or 10 ppt
+        bindcode 46 resize shrink height 10 px or 10 ppt
+        bindcode 47 resize grow width 10 px or 10 ppt
+
+        bindsym Left  resize shrink width 10 px or 10 ppt
+        bindsym Down  resize grow height 10 px or 10 ppt
+        bindsym Up    resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindcode $mod+27 mode "default"
+}
+
+bindcode $mod+27 mode "resize"
+
+# Dracula color theme
+# class                 border   backgr.  text     indicator child_border
+client.focused          #BD93F9  #BD93F9  #F8F8F2  #BD93F9   #BD93F9
+client.focused_inactive #44475A  #44475A  #F8F8F2  #44475A   #44475A
+client.unfocused        #282A36  #282A36  #BFBFBF  #282A36   #282A36
+client.urgent           #44475A  #FF5555  #F8F8F2  #FF5555   #FF5555
+client.placeholder      #282A36  #282A36  #F8F8F2  #282A36   #282A36
+client.background       #F8F8F2
+
+# Polybar
+exec_always --no-startup-id ~/.config/polybar/launch.sh

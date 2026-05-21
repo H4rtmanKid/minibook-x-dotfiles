@@ -1,0 +1,22 @@
+#!/bin/bash
+# $1 = "up" | "down"
+
+case "$1" in
+    up)   brightnessctl set 5%+ ;;
+    down) brightnessctl set 5%- ;;
+esac
+
+BRIGHT=$(brightnessctl get)
+MAX=$(brightnessctl max)
+PCT=$(( BRIGHT * 100 / MAX ))
+
+if   [ "$PCT" -ge 70 ]; then ICON="󰃠"
+elif [ "$PCT" -ge 40 ]; then ICON="󰃟"
+elif [ "$PCT" -ge 10 ]; then ICON="󰃞"
+else                         ICON="󰃝"
+fi
+
+notify-send -a "osd" -u low -t 1500 \
+    -h "string:x-dunst-stack-tag:brightness" \
+    -h "int:value:${PCT}" \
+    "${ICON} Brightness" "${PCT}%"
