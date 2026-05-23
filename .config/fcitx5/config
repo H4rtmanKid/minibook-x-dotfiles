@@ -1,6 +1,6 @@
 [Hotkey]
 # Toggle Input Method
-TriggerKeys=Super+space
+TriggerKeys=
 # Enumerate when holding modifier of Toggle key
 EnumerateWithTriggerKeys=True
 # Enumerate Input Method Forward

@@ -27,13 +27,15 @@ exec --no-startup-id picom --config ~/.config/picom.conf -b
 exec --no-startup-id thunar --daemon
 exec --no-startup-id dunst
 exec --no-startup-id fcitx5 -d --disable classicui,notificationitem
+exec --no-startup-id bash -c "sleep 3; setxkbmap -layout us,th -option"
 exec --no-startup-id feh --bg-scale /home/h4rtmankid/wallpaper/86-wallpaper.jpg
+
+# Toggle Thai/English input method (also ensures us,th xkbmap in case it was reset)
+bindsym $mod+space exec --no-startup-id ~/.config/i3/toggle-im.sh
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 
-# Toggle Thai/English input method
-bindsym $mod+space exec --no-startup-id ~/.config/i3/toggle-im.sh
 
 # Volume control — OSD notification (XF86 keys are layout-independent)
 bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.local/bin/volume-notify up
@@ -188,6 +190,9 @@ client.unfocused        #282A36  #282A36  #BFBFBF  #282A36   #282A36
 client.urgent           #44475A  #FF5555  #F8F8F2  #FF5555   #FF5555
 client.placeholder      #282A36  #282A36  #F8F8F2  #282A36   #282A36
 client.background       #F8F8F2
+
+# Keyboard layout
+exec_always --no-startup-id setxkbmap -layout us,th -option
 
 # Polybar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
